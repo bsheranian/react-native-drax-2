@@ -379,19 +379,20 @@ const DraxListUnforwarded = <T extends unknown>(
 
 	// Reset all shift values.
 	const resetShifts = useCallback((animated: boolean = false) => {
-		shiftsRef.current.forEach((shift) => {
-			// eslint-disable-next-line no-param-reassign
-			shift.targetValue = 0;
-			if (animated) {
-				Animated.timing(shift.animatedValue, {
-					duration: 200,
-					toValue: 0,
-					useNativeDriver: true,
-				}).start();
-			} else {
-				shift.animatedValue.setValue(0);
-			}
-		});
+		// TODO: fix shift animation
+		// shiftsRef.current.forEach((shift) => {
+		// 	// eslint-disable-next-line no-param-reassign
+		// 	shift.targetValue = 0;
+		// 	if (animated) {
+		// 		Animated.timing(shift.animatedValue, {
+		// 			duration: 200,
+		// 			toValue: 0,
+		// 			useNativeDriver: true,
+		// 		}).start();
+		// 	} else {
+		// 		shift.animatedValue.setValue(0);
+		// 	}
+		// });
 	}, []);
 
 	const extractedStyles = StyleSheet.flatten(
@@ -407,33 +408,34 @@ const DraxListUnforwarded = <T extends unknown>(
 	// Update shift values in response to a drag.
 	const updateShifts = useCallback(
 		(fromPayload, toPayload, draggedMeasurements) => {
-			const isExternalItem = fromPayload.parentId !== id;
-			const fromIndex = isExternalItem ? -1 : fromPayload.index;
-			const { width = 50, height = 50 } = draggedMeasurements ?? {};
-			const offset = horizontal ? width + columnGap : height + rowGap;
-			originalIndexes.forEach((originalIndex, index) => {
-				const shift = shiftsRef.current[originalIndex];
-				let newTargetValue = 0;
-				if (isExternalItem) {
-					if (index >= toPayload.index) {
-						newTargetValue = offset;
-					}
-				} else {
-					if (index > fromIndex && index <= toPayload.index) {
-						newTargetValue = -offset;
-					} else if (index < fromIndex && index >= toPayload.index) {
-						newTargetValue = offset;
-					}
-				}
-				if (shift.targetValue !== newTargetValue) {
-					shift.targetValue = newTargetValue;
-					Animated.timing(shift.animatedValue, {
-						duration: 200,
-						toValue: newTargetValue,
-						useNativeDriver: true,
-					}).start();
-				}
-			});
+			// TODO: fix shift animation
+			// 	const isExternalItem = fromPayload.parentId !== id;
+			// 	const fromIndex = isExternalItem ? -1 : fromPayload.index;
+			// 	const { width = 50, height = 50 } = draggedMeasurements ?? {};
+			// 	const offset = horizontal ? width + columnGap : height + rowGap;
+			// 	originalIndexes.forEach((originalIndex, index) => {
+			// 		const shift = shiftsRef.current[originalIndex];
+			// 		let newTargetValue = 0;
+			// 		if (isExternalItem) {
+			// 			if (index >= toPayload.index) {
+			// 				newTargetValue = offset;
+			// 			}
+			// 		} else {
+			// 			if (index > fromIndex && index <= toPayload.index) {
+			// 				newTargetValue = -offset;
+			// 			} else if (index < fromIndex && index >= toPayload.index) {
+			// 				newTargetValue = offset;
+			// 			}
+			// 		}
+			// 		if (shift.targetValue !== newTargetValue) {
+			// 			shift.targetValue = newTargetValue;
+			// 			Animated.timing(shift.animatedValue, {
+			// 				duration: 200,
+			// 				toValue: newTargetValue,
+			// 				useNativeDriver: true,
+			// 			}).start();
+			// 		}
+			// 	});
 		},
 		[originalIndexes, horizontal, columnGap, rowGap, id],
 	);
