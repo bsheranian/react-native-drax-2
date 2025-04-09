@@ -533,7 +533,7 @@ const DraxListUnforwarded = <T extends unknown>(
 
 	// Stop auto-scrolling, and potentially update shifts and reorder data.
 	const handleDragDrop = useCallback(
-		(eventData) => {
+		(eventData: DraxMonitorDragDropEventData) => {
 			handleDragEnd({ animateShifts: false });
 
 			const { dragged } = eventData;
@@ -542,17 +542,17 @@ const DraxListUnforwarded = <T extends unknown>(
 			const toIndex = findDropIndex(dragged);
 
 			// Handle receiving external item
-			if (allowReceivingExternalItems && !isOurDragged && reorderable) {
+			if (
+				allowReceivingExternalItems &&
+				!isOurDragged &&
+				reorderable &&
+				toIndex !== undefined
+			) {
 				// If an external item was dropped on us, call the callback
 
 				onReceiveExternalItem?.({
-					...eventData,
-
-					draggedItem: dragged.payload.item,
-
+					dragged,
 					toIndex,
-
-					receivingList: { id },
 				});
 
 				// Reset currently dragged over position index to undefined

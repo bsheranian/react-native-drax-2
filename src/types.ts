@@ -902,20 +902,15 @@ export interface DraxListOnItemReorder<TItem> {
 }
 
 /** Event data for when an external item is received in a new position within a DraxList, reordering the list */
-export interface DraxListOnReceiveExternalItemEventData<TItem> {
-	/* The item that was moved */
-	fromItem: TItem;
-	/* The list index of the item that was moved */
-	fromIndex: number;
-	/* The item it was moved onto */
-	toItem: TItem;
+export interface DraxListOnReceiveExternalItemEventData {
+	dragged: DraxEventDraggedViewData;
 	/* The list index of the item it was moved onto */
 	toIndex: number;
 }
 
 /** Callback handler for when an external item is received in a new position within a DraxList, reordering the list */
-export interface DraxListOnReceiveExternalItem<TItem> {
-	(eventData: DraxListOnReceiveExternalItemEventData<TItem>): void;
+export interface DraxListOnReceiveExternalItem {
+	(eventData: DraxListOnReceiveExternalItemEventData): void;
 }
 
 /** Props for a DraxList; extends standard FlatList props */
@@ -954,7 +949,7 @@ export interface DraxListProps<TItem>
 	onItemReorder?: DraxListOnItemReorder<TItem>;
 
 	/** Callback handler for when an external item is received in a new position within the list, reordering the list */
-	onReceiveExternalItem?: DraxListOnReceiveExternalItem<TItem>;
+	onReceiveExternalItem?: DraxListOnReceiveExternalItem;
 
 	/** Whether or not the list should allow receiving external items */
 	allowReceivingExternalItems?: boolean;
