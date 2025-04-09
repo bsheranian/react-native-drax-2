@@ -229,7 +229,7 @@ const DraxListUnforwarded = <T extends unknown>(
 					lockDragYPosition={lockItemDragsToMainAxis && horizontal}
 					draggable={itemsDraggable}
 					payload={{ index, originalIndex }}
-					{...(viewPropsExtractor?.(item) ?? {})}
+					{...(viewPropsExtractor?.(item, index) ?? {})}
 					onDragEnd={resetDraggedItem}
 					onDragDrop={resetDraggedItem}
 					onMeasure={(measurements) => {

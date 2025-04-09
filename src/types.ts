@@ -972,5 +972,5 @@ export interface DraxListProps<TItem>
 	longPressDelay?: number;
 
 	/** Function that receives an item and returns a list of DraxViewProps to apply to that item's DraxView */
-	viewPropsExtractor?: (item: TItem) => Partial<DraxViewProps>;
+	viewPropsExtractor?: (item: TItem, index: number) => Partial<DraxViewProps>;
 }
