@@ -413,11 +413,6 @@ const DraxListUnforwarded = <T extends unknown>(
 			const { width = 50, height = 50 } = draggedMeasurements ?? {};
 			const offset = horizontal ? width + columnGap : height + rowGap;
 
-			// Early return if dragging to same position (internal items only)
-			if (!isExternalItem && fromIndex === toIndex) {
-				return;
-			}
-
 			originalIndexes.forEach((originalIndex, index) => {
 				const shift = shiftsRef.current[originalIndex];
 				let newTargetValue = 0;
@@ -435,17 +430,13 @@ const DraxListUnforwarded = <T extends unknown>(
 						if (index > fromIndex && index <= toIndex) {
 							newTargetValue = -offset;
 						}
-						// The dragged item itself (at fromIndex) will move to toIndex position
-						// All other items remain at 0
 					} else if (fromIndex > toIndex) {
 						// Moving backward: items between toIndex and fromIndex-1 shift forward
 						if (index >= toIndex && index < fromIndex) {
 							newTargetValue = offset;
 						}
-						// The dragged item itself (at fromIndex) will move to toIndex position
-						// All other items remain at 0
 					}
-					// If fromIndex === toIndex, we already returned early above
+					// If fromIndex === toIndex, all items return to 0 (no shifts needed)
 				}
 
 				// Only animate if the target value actually changed
