@@ -409,37 +409,22 @@ const DraxListUnforwarded = <T extends unknown>(
 		(fromPayload, toPayload, draggedMeasurements) => {
 			const isExternalItem = fromPayload.parentId !== id;
 			const fromIndex = isExternalItem ? -1 : fromPayload.index;
-			const toIndex = toPayload.index;
 			const { width = 50, height = 50 } = draggedMeasurements ?? {};
 			const offset = horizontal ? width + columnGap : height + rowGap;
-
 			originalIndexes.forEach((originalIndex, index) => {
 				const shift = shiftsRef.current[originalIndex];
 				let newTargetValue = 0;
-
 				if (isExternalItem) {
-					// External item: shift all items at and after the drop position forward
-					if (index >= toIndex) {
+					if (index >= toPayload.index) {
 						newTargetValue = offset;
 					}
-					// Items before the drop position remain at 0 (no shift needed)
 				} else {
-					// Internal item reordering
-					if (fromIndex < toIndex) {
-						// Moving forward: items between fromIndex+1 and toIndex shift backward
-						if (index > fromIndex && index <= toIndex) {
-							newTargetValue = -offset;
-						}
-					} else if (fromIndex > toIndex) {
-						// Moving backward: items between toIndex and fromIndex-1 shift forward
-						if (index >= toIndex && index < fromIndex) {
-							newTargetValue = offset;
-						}
+					if (index > fromIndex && index <= toPayload.index) {
+						newTargetValue = -offset;
+					} else if (index < fromIndex && index >= toPayload.index) {
+						newTargetValue = offset;
 					}
-					// If fromIndex === toIndex, all items return to 0 (no shifts needed)
 				}
-
-				// Only animate if the target value actually changed
 				if (shift.targetValue !== newTargetValue) {
 					shift.targetValue = newTargetValue;
 					Animated.timing(shift.animatedValue, {
